@@ -1,3 +1,5 @@
+pub mod wc;
+
 fn main() {
-    println!("Hello, world!");
+    wc::main();
 }
