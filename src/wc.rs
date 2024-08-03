@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, Read};
+use std::io::{self, BufRead, BufReader, Error, Read};
 
 /// Implements the wc command, which counts the number of words in a file.
 pub fn main() {
@@ -36,7 +36,7 @@ fn process_file(file_name: &str) -> u64 {
 }
 
 /// Process the contents of the file, character by character
-fn word_count(reader: &mut dyn BufRead) -> Result<u64, std::io::Error> {
+fn word_count(reader: &mut dyn BufRead) -> Result<u64, Error> {
     let mut count = 0;
     let mut in_word = false;
 
