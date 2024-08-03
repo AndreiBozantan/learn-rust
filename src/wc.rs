@@ -6,16 +6,16 @@ pub fn main() {
     let mut total = 0;
     let args: std::env::Args = std::env::args();
     if args.len() == 1 {
-        process_file("-", &mut total); // if no file names are provided, use stdin
+        total += process_file("-"); // if no file names are provided, use stdin
     } else {
         for file_name in args.skip(1) {
-            process_file(&file_name, &mut total);
+            total += process_file(&file_name);
         }
     }
     print!("Total: {total} words");
 }
 
-fn process_file(file_name: &str, total: &mut u64) {
+fn process_file(file_name: &str) -> u64 {
     let reader = match file_name {
         "-" => Some(Box::new(io::stdin().lock()) as Box<dyn BufRead>),
         _ => File::open(&file_name)
@@ -24,13 +24,15 @@ fn process_file(file_name: &str, total: &mut u64) {
                 .ok()
     };
 
+    let mut result = 0;
     if let Some(mut reader) = reader {
         let file_name = if file_name == "-" { "stdin" } else { file_name };
         match word_count(&mut reader) {
-            Ok(count) => { println!("{file_name}: {count} words"); *total += count; }
+            Ok(count) => { println!("{file_name}: {count} words"); result = count; }
             Err(err) => { eprintln!("{file_name}: ERROR file read ({err})"); }
         }
     }
+    result
 }
 
 /// Process the contents of the file, character by character
