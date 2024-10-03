@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader, Error, Read};
 
 /// Implements the wc command, which counts the number of words in a file.
-pub fn main() {
+fn main() {
     let mut total = 0;
     let args: std::env::Args = std::env::args();
     if args.len() == 1 {
